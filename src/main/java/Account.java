@@ -1,11 +1,9 @@
-public abstract class Account {
+public class Account {
 	private double balance;
 	private double apr;
-	private int id;
 
-	public Account(double apr, int id) {
+	public Account(double apr) {
 		this.apr = apr;
-		this.id = id;
 	}
 
 	public double getBalance() {
@@ -26,14 +24,6 @@ public abstract class Account {
 
 	public void setApr(double aprToSet) {
 		apr = aprToSet;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int idToSet) {
-		id = idToSet;
 	}
 
 	public void depositMoney(double amountToDeposit) {
