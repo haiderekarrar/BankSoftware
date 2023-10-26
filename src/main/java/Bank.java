@@ -20,11 +20,11 @@ public class Bank {
 		}
 		if (accountType == "Savings") {
 			accounts.put(accountId, new SavingsAccount(accountApr, accountId));
-			if (accountType == "Certificate of Deposit") {
-				accounts.put(accountId, new CertificateOfDeposit(accountApr, accountId, deposit));
-			}
-
 		}
+		if (accountType == "Certificate of Deposit") {
+			accounts.put(accountId, new CertificateOfDeposit(accountApr, accountId, deposit));
+		}
+
 	}
 
 	public void depositMoneyFromBank(int accountId, double amountToDeposit) {
