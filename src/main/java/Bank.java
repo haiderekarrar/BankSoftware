@@ -35,4 +35,11 @@ public class Bank {
 		accounts.get(accountId).withdrawMoney(amountToWithdraw);
 	}
 
+	public boolean accountExistsByAccountID(int accountID) {
+		if (accounts.get(accountID) != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
