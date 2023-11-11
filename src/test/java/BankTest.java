@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /* 
-ask whether giving an ammount to addaccount is okay since I seperate checking/saving and cd in bank.java so is it ffine if i take deposit for add account)
+ask whether giving an ammount to addaccount is okay since I seperate checking/saving and cd in bank.java so is it fine if i take deposit for add account)
 
  */
 public class BankTest {
