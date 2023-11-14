@@ -1,4 +1,5 @@
 public class CommandValidator {
+
 	private Bank bank;
 
 	public CommandValidator(Bank bank) {
@@ -6,34 +7,28 @@ public class CommandValidator {
 	}
 
 	public boolean validate(String command) {
-
-		String[] parts = command.split(" "); // Split the command into words using space as a delimiter//
-		// commandValidator;
+		String[] parts = command.split(" ");
+		if (parts.length > 5 || parts.length < 3) {
+			return false;
+		}
 		String commandType = parts[0];
-		String accountType = parts.length > 1 ? parts[1] : ""; // Account type is the second word if it exists
-		String accountID = parts.length > 2 ? parts[2] : "";
-		double accountApr = parts.length > 3 ? Double.parseDouble(parts[3]) : -1;
-		String commandTypeUpperCase = commandType.toUpperCase();
-
-		if (!(commandTypeUpperCase.equals("CREATE"))) {
+		if (!(commandType.toUpperCase().equals("CREATE") || commandType.toUpperCase().equals("DEPOSIT"))) {
 			return false;
 		}
-		if (accountID.length() != 8) {
-			return false; // Account ID must be 8 characters long.
-		}
-
-		// Check if accountIDStr contains only numeric characters
-		if (!accountID.matches("\\d{8}")) {
-			return false; // Account ID contains non-numeric characters.
-		}
-		if (bank.accountExistsByAccountID(Integer.parseInt(accountID))) {
-			return false;
-		}
-
-		if (!(accountApr <= 10.0 && accountApr >= 0.0)) {
-			return false;
-		}
-		return true;
-
+		return validateCommand(commandType, parts);
 	}
+
+	protected boolean validateCommand(String commandType, String[] parts) {
+		// will be overridden by child classes
+		return true;
+	}
+
+	protected boolean isValidAccountId(String accountID) {
+		return (accountID.length() == 8 && accountID.matches("\\d{8}"));
+	}
+
+	protected boolean doesAccountExist(String accountID) {
+		return bank.accountExistsByAccountID(Integer.parseInt(accountID));
+	}
+
 }
