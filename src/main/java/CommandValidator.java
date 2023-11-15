@@ -31,4 +31,8 @@ public class CommandValidator {
 		return bank.accountExistsByAccountID(Integer.parseInt(accountID));
 	}
 
+	protected String accountTypeByAccountId(String accountID) {
+		return bank.getAccountTypeByAccountID(Integer.parseInt(accountID));
+	}
+
 }

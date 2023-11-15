@@ -16,13 +16,13 @@ public class Bank {
 
 	public void addAccount(String accountType, int accountId, double accountApr, double deposit) {
 		if (accountType == "Checking") {
-			accounts.put(accountId, new CheckingAccount(accountApr, accountId));
+			accounts.put(accountId, new CheckingAccount(accountApr, accountId, accountType));
 		}
 		if (accountType == "Savings") {
-			accounts.put(accountId, new SavingsAccount(accountApr, accountId));
+			accounts.put(accountId, new SavingsAccount(accountApr, accountId, accountType));
 		}
 		if (accountType == "Certificate of Deposit") {
-			accounts.put(accountId, new CertificateOfDeposit(accountApr, accountId, deposit));
+			accounts.put(accountId, new CertificateOfDeposit(accountApr, accountId, deposit, accountType));
 		}
 
 	}
@@ -41,5 +41,9 @@ public class Bank {
 		} else {
 			return false;
 		}
+	}
+
+	public String getAccountTypeByAccountID(int accountID) {
+		return accounts.get(accountID).getAccountType();
 	}
 }

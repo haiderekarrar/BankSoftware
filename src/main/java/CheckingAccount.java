@@ -1,8 +1,8 @@
 public class CheckingAccount extends Account {
 	private double balance;
 
-	public CheckingAccount(double apr, int id) {
-		super(apr, id);
+	public CheckingAccount(double apr, int id, String accountType) {
+		super(apr, id, accountType);
 		balance = 0;
 	}
 

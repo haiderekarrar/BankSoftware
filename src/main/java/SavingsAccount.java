@@ -1,9 +1,9 @@
 public class SavingsAccount extends Account {
 	private double balance;
 
-	public SavingsAccount(double apr, int id) {
+	public SavingsAccount(double apr, int id, String accountType) {
 
-		super(apr, id);
+		super(apr, id, accountType);
 		balance = 0;
 	}
 

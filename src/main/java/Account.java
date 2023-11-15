@@ -2,10 +2,12 @@ public abstract class Account {
 	private double balance;
 	private double apr;
 	private int id;
+	private String accountType;
 
-	public Account(double apr, int id) {
+	public Account(double apr, int id, String accountType) {
 		this.apr = apr;
 		this.id = id;
+		this.accountType = accountType;
 	}
 
 	public double getBalance() {
@@ -28,12 +30,12 @@ public abstract class Account {
 		apr = aprToSet;
 	}
 
-	public int getId() {
-		return id;
+	public String getAccountType() {
+		return accountType;
 	}
 
-	public void setId(int idToSet) {
-		id = idToSet;
+	public int getId() {
+		return id;
 	}
 
 	public void depositMoney(double amountToDeposit) {

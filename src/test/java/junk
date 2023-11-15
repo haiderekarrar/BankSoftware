@@ -1,0 +1,19 @@
+@Test
+	void amount_to_deposit_cannot_be_greater_than_2500_in_savings() {
+		String commandType = "deposit";
+		bank.addAccount("Savings", 12345677, 0.6, 0);
+		String[] parts = { "12345677", "2900" };
+		boolean actual = depositValidator.validateCommand(commandType, parts);
+		assertFalse(actual);
+
+	}
+
+@Test
+	void zero_can_be_deposited_in_checking() {
+		String commandType = "deposit";
+		bank.addAccount("Checking", 12345677, 0.6, 0);
+		String[] parts = { "12345677", "0" };
+		boolean actual = depositValidator.validateCommand(commandType, parts);
+		assertTrue(actual);
+
+	}

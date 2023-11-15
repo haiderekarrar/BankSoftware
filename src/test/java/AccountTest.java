@@ -6,12 +6,13 @@ import org.junit.jupiter.api.Test;
 public class AccountTest {
 	public static final double ACCOUNT_APR = 2.1;
 	public static final int ACCOUNT_ID = 12345678;
+	public static final String ACCOUNT_TYPE = "Savings";
 
 	Account account;
 
 	@BeforeEach
 	public void setUp() {
-		account = new SavingsAccount(ACCOUNT_APR, ACCOUNT_ID);
+		account = new SavingsAccount(ACCOUNT_APR, ACCOUNT_ID, ACCOUNT_TYPE);
 	}
 
 	@Test
