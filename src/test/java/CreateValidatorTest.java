@@ -234,8 +234,17 @@ public class CreateValidatorTest {
 		assertFalse(actual);
 	}
 
+	@Test
 	void cd_amount_is_negative() {
 		String commandType = "create";
+		String[] parts = { "cD", "12345677", "10", "-1" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertFalse(actual);
+	}
+
+	@Test
+	void command_is_numeric() {
+		String commandType = "65351213";
 		String[] parts = { "cD", "12345677", "10", "-1" };
 		boolean actual = createValidator.validateCommand(commandType, parts);
 		assertFalse(actual);
