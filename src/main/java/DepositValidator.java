@@ -17,6 +17,10 @@ public class DepositValidator extends CommandValidator {
 			return false;
 		}
 
+		if (!isValidAccountId(accountID)) {
+			return false;
+		}
+
 //account needs to exist in the first place in order to deposit 
 		if (!(doesAccountExist(accountID))) {
 			return false;

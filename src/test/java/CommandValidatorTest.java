@@ -78,4 +78,10 @@ public class CommandValidatorTest {
 		boolean actual = commandValidator.doesAccountExist("12345678");
 		assertTrue(actual);
 	}
+
+	@Test
+	void command_invalid_if_account_does_not_exist() {
+		boolean actual = commandValidator.doesAccountExist("12345678");
+		assertFalse(actual);
+	}
 }
