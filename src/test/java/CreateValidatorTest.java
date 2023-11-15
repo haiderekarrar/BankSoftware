@@ -146,4 +146,99 @@ public class CreateValidatorTest {
 		assertTrue(actual);
 	}
 
+	@Test
+	void cd_is_case_insensitive_check() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "9.5", "1100" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertTrue(actual);
+	}
+
+	@Test
+	void cd_upper_edge_case_check() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "9.5", "10001" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertFalse(actual);
+	}
+
+	@Test
+	void cd_lower_edge_case_check() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "9.5", "999" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertFalse(actual);
+	}
+
+	@Test
+	void cd_1000_deposit_check() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "9.5", "1000" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertTrue(actual);
+	}
+
+	@Test
+	void cd_10000_deposit_check() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "9.5", "10000" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertTrue(actual);
+	}
+
+	@Test
+	void cd_has_too_many_arguments() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "9.5", "1000", "balabla" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertFalse(actual);
+	}
+
+	@Test
+	void cd_has_too_few_arguments() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "balabla" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertFalse(actual);
+	}
+
+	@Test
+	void cd_amount_is_not_an_int() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "10", "100.1" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertFalse(actual);
+	}
+
+	@Test
+	void cd_amount_is_non_numeric() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "10", "absbdjwd" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertFalse(actual);
+	}
+
+	@Test
+	void account_apr_is_non_numeric() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "ansmn", "100" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertFalse(actual);
+	}
+
+	@Test
+	void account_apr_upper_edge_case() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "10.1", "100" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertFalse(actual);
+	}
+
+	void cd_amount_is_negative() {
+		String commandType = "create";
+		String[] parts = { "cD", "12345677", "10", "-1" };
+		boolean actual = createValidator.validateCommand(commandType, parts);
+		assertFalse(actual);
+	}
+
 }
