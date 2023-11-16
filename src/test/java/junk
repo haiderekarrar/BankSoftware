@@ -1,19 +1,34 @@
-@Test
-	void amount_to_deposit_cannot_be_greater_than_2500_in_savings() {
-		String commandType = "deposit";
-		bank.addAccount("Savings", 12345677, 0.6, 0);
-		String[] parts = { "12345677", "2900" };
-		boolean actual = depositValidator.validateCommand(commandType, parts);
-		assertFalse(actual);
+public class CreateCommandProcessor extends CommandProcessor {
+	private Bank bank;
 
+	public CreateCommandProcessor(Bank bank) {
+		super(bank);
 	}
 
-@Test
-	void zero_can_be_deposited_in_checking() {
-		String commandType = "deposit";
-		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String[] parts = { "12345677", "0" };
-		boolean actual = depositValidator.validateCommand(commandType, parts);
-		assertTrue(actual);
+	@Over
+	public String[] commanocessor(String[] parts) {
+		return parts;
+	}
+}
+
+
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+public class CreateCommandProcessorTest {
+	private CreateCommandProcessor createCommandProcessor;
+	private Bank bank; // Replace with your actual Bank implementation
+
+	@BeforeEach
+	void setUp() {
+		bank = new Bank(); // Replace with actual implementation
+		createCommandProcessor = new CreateCommandProcessor(bank);
+	}
+
+	@Test
+	void create_account_with_valid_id_apr_account_type_according_to_create_command() {
+
+	}
 
 	}

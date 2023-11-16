@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 public class CertificateOfDepositTest {
 	public static final double ACCOUNT_APR = 2.1;
 	public static final int ACCOUNT_ID = 12345678;
-	public static final double DEPOSIT = 100.1;
+	public static final int DEPOSIT = 100;
 	public static final String ACCOUNT_TYPE = "Certificate of Deposit";
 
 	CertificateOfDeposit certificateOfDeposit;

@@ -12,7 +12,7 @@ public class BankTest {
 	public static final int ACCOUNT_ID = 14516562;
 	public static final double ACCOUNT_APR = 2.1;
 	public static final String ACCOUNT_TYPE = "Checking";
-	public static final double CD_DEPOSIT = 150;
+	public static final int CD_DEPOSIT = 150;
 
 	Bank bank;
 

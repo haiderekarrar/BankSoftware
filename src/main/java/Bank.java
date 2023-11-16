@@ -14,7 +14,7 @@ public class Bank {
 		return accounts;
 	}
 
-	public void addAccount(String accountType, int accountId, double accountApr, double deposit) {
+	public void addAccount(String accountType, int accountId, double accountApr, int deposit) {
 		if (accountType == "Checking") {
 			accounts.put(accountId, new CheckingAccount(accountApr, accountId, accountType));
 		}
@@ -41,6 +41,14 @@ public class Bank {
 		} else {
 			return false;
 		}
+	}
+
+	public double getAccountApr(int accountID) {
+		return accounts.get(accountID).getApr();
+	}
+
+	public int getBalance(int accountID) {
+		return accounts.get(accountID).getBalance();
 	}
 
 	public String getAccountTypeByAccountID(int accountID) {
