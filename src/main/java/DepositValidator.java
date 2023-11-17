@@ -1,21 +1,14 @@
 public class DepositValidator extends CommandValidator {
-	public DepositValidator(Bank bank) {
-		super(bank);
+	public DepositValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator) {
+		super(bank, depositValidator, createValidator);
 	}
 
-	@Override
-	public boolean validateCommand(String commandType, String[] parts) {
+	public boolean validateCommand(String[] parts) {
 
-		if (parts.length != 2) {
+		if (parts.length != 3) {
 			return false;
 		}
-
-		String commandTypeUpperCase = commandType.toUpperCase();
-		String accountID = parts[0]; // Account type is the second word
-
-		if (!(commandTypeUpperCase.equals("DEPOSIT"))) {
-			return false;
-		}
+		String accountID = parts[1]; // Account type is the second word
 
 		if (!isValidAccountId(accountID)) {
 			return false;
@@ -27,7 +20,7 @@ public class DepositValidator extends CommandValidator {
 		}
 
 		try {
-			int amountToDeposit = Integer.parseInt(parts[1]);
+			double amountToDeposit = Double.parseDouble(parts[2]);
 			if (amountToDeposit < 0) {
 				return false;
 
@@ -39,7 +32,7 @@ public class DepositValidator extends CommandValidator {
 				if (amountToDeposit > 1000) {
 					return false;
 				}
-			} else if (accountTypeByAccountId(accountID).toUpperCase().equals("CD")) {
+			} else if (accountTypeByAccountId(accountID).toUpperCase().equals("CERTIFICATE OF DEPOSIT")) {
 				return false;
 			}
 

@@ -1,5 +1,5 @@
 public abstract class Account {
-	private int balance;
+	private double balance;
 	private double apr;
 	private int id;
 	private String accountType;
@@ -10,7 +10,7 @@ public abstract class Account {
 		this.accountType = accountType;
 	}
 
-	public int getBalance() {
+	public double getBalance() {
 
 		if (balance < 0) {
 			balance = 0;
@@ -18,7 +18,7 @@ public abstract class Account {
 		return balance;
 	}
 
-	public void setBalance(int cashToDeposit) {
+	public void setBalance(double cashToDeposit) {
 		balance = cashToDeposit;
 	}
 

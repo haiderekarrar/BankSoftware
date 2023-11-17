@@ -1,26 +1,19 @@
 public class CreateValidator extends CommandValidator {
-	public CreateValidator(Bank bank) {
-		super(bank);
+	public CreateValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator) {
+		super(bank, depositValidator, createValidator);
 	}
 
-	@Override
-	public boolean validateCommand(String commandType, String[] parts) {
+	public boolean validateCommand(String[] parts) {
 
-		if (parts.length != 3 && parts.length != 4) {
+		if (parts.length != 4 && parts.length != 5) {
 			return false;
 		}
-
-		String commandTypeUpperCase = commandType.toUpperCase();
-		String accountType = parts[0]; // Account type is the second word
+		String accountType = parts[1]; // Account type is the second word
 		String accountTypeUpperCase = accountType.toUpperCase();
 
-		if (!(commandTypeUpperCase.equals("CREATE"))) {
-			return false;
-		}
-
-		if ("CD".equals(accountTypeUpperCase) && parts.length == 4) {
+		if ("CD".equals(accountTypeUpperCase) && parts.length == 5) {
 			try {
-				int cdAmount = Integer.parseInt(parts[3]);
+				double cdAmount = Double.parseDouble(parts[4]);
 				if (cdAmount < 1000 || cdAmount > 10000) {
 					return false;
 				}
@@ -29,13 +22,13 @@ public class CreateValidator extends CommandValidator {
 				return false;
 			}
 		} else if (("SAVINGS".equals(accountTypeUpperCase) || "CHECKING".equals(accountTypeUpperCase))
-				&& parts.length != 3) {
+				&& parts.length != 4) {
 			return false;
 		}
 
-		String accountID = parts[1];
+		String accountID = parts[2];
 		try {
-			double accountApr = Double.parseDouble(parts[2]);
+			double accountApr = Double.parseDouble(parts[3]);
 			if (accountApr > 10.0 || accountApr < 0.0) {
 				return false;
 			}

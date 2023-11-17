@@ -1,9 +1,13 @@
 public class CommandValidator {
 
 	private Bank bank;
+	private DepositValidator depositValidator;
+	private CreateValidator createValidator;
 
-	public CommandValidator(Bank bank) {
+	public CommandValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator) {
 		this.bank = bank;
+		this.createValidator = createValidator;
+		this.depositValidator = depositValidator;
 	}
 
 	public boolean validate(String command) {
@@ -14,8 +18,12 @@ public class CommandValidator {
 		String commandType = parts[0];
 		if (!(commandType.toUpperCase().equals("CREATE") || commandType.toUpperCase().equals("DEPOSIT"))) {
 			return false;
+		} else if (commandType.toUpperCase().equals("CREATE")) {
+			return createValidator.validateCommand(parts);
+		} else if (commandType.toUpperCase().equals("DEPOSIT")) {
+			return depositValidator.validateCommand(parts);
 		}
-		return validateCommand(commandType, parts);
+		return true;
 	}
 
 	protected boolean validateCommand(String commandType, String[] parts) {

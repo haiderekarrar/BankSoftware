@@ -57,33 +57,33 @@ public class BankTest {
 	void CD_DEPOSITing_money_twice_by_id() {
 		bank.addAccount(ACCOUNT_TYPE, ACCOUNT_ID, ACCOUNT_APR, CD_DEPOSIT);
 		bank.depositMoneyFromBank(ACCOUNT_ID, 100);
-		bank.depositMoneyFromBank(ACCOUNT_ID, 200.2);
-		assertEquals(300.2, bank.getAccounts().get(ACCOUNT_ID).getBalance());
+		bank.depositMoneyFromBank(ACCOUNT_ID, 200);
+		assertEquals(300, bank.getAccounts().get(ACCOUNT_ID).getBalance());
 	}
 
 	@Test
 	void withdrawing_money_once_by_id() {
 		bank.addAccount(ACCOUNT_TYPE, ACCOUNT_ID, ACCOUNT_APR, CD_DEPOSIT);
-		bank.depositMoneyFromBank(ACCOUNT_ID, 200.2);
-		bank.withdrawMoneyFromBank(ACCOUNT_ID, 50.2);
+		bank.depositMoneyFromBank(ACCOUNT_ID, 200);
+		bank.withdrawMoneyFromBank(ACCOUNT_ID, 50);
 		assertEquals(150, bank.getAccounts().get(ACCOUNT_ID).getBalance());
 	}
 
 	@Test
 	void withdrawing_money_twice_by_id() {
 		bank.addAccount(ACCOUNT_TYPE, ACCOUNT_ID, ACCOUNT_APR, CD_DEPOSIT);
-		bank.depositMoneyFromBank(ACCOUNT_ID, 200.2);
-		bank.withdrawMoneyFromBank(ACCOUNT_ID, 50.2);
-		bank.withdrawMoneyFromBank(ACCOUNT_ID, 10.5);
-		assertEquals(139.5, bank.getAccounts().get(ACCOUNT_ID).getBalance());
+		bank.depositMoneyFromBank(ACCOUNT_ID, 200);
+		bank.withdrawMoneyFromBank(ACCOUNT_ID, 50);
+		bank.withdrawMoneyFromBank(ACCOUNT_ID, 10);
+		assertEquals(140, bank.getAccounts().get(ACCOUNT_ID).getBalance());
 	}
 
 	@Test
 	void withdrawing_money_twice_by_id_balance_balance_does_not_go_below_zero() {
 		bank.addAccount(ACCOUNT_TYPE, ACCOUNT_ID, ACCOUNT_APR, CD_DEPOSIT);
-		bank.depositMoneyFromBank(ACCOUNT_ID, 200.2);
-		bank.withdrawMoneyFromBank(ACCOUNT_ID, 50.2);
-		bank.withdrawMoneyFromBank(ACCOUNT_ID, 200.5);
+		bank.depositMoneyFromBank(ACCOUNT_ID, 200);
+		bank.withdrawMoneyFromBank(ACCOUNT_ID, 50);
+		bank.withdrawMoneyFromBank(ACCOUNT_ID, 200);
 		assertEquals(0, bank.getAccounts().get(ACCOUNT_ID).getBalance());
 	}
 

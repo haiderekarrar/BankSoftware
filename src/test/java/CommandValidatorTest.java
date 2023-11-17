@@ -7,12 +7,17 @@ import org.junit.jupiter.api.Test;
 public class CommandValidatorTest {
 
 	private CommandValidator commandValidator;
+	private DepositValidator depositValidator;
+	private CreateValidator createValidator;
+
 	private Bank bank; // Replace with your actual Bank implementation
 
 	@BeforeEach
 	void setUp() {
-		bank = new Bank(); // Replace with actual implementation
-		commandValidator = new CommandValidator(bank);
+		bank = new Bank();
+		depositValidator = new DepositValidator(bank, depositValidator, createValidator);
+		createValidator = new CreateValidator(bank, depositValidator, createValidator);
+		commandValidator = new CommandValidator(bank, depositValidator, createValidator);
 	}
 
 	@Test
@@ -41,6 +46,7 @@ public class CommandValidatorTest {
 
 	@Test
 	void case_insensitive_deposit_command() {
+		bank.addAccount("Savings", 12345678, 5, 0);
 		String command = "dEpOsit 12345678 100";
 		assertTrue(commandValidator.validate(command));
 	}

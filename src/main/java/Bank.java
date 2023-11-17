@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Bank {
-	private int deposit;
+	private double deposit;
 
 	private Map<Integer, Account> accounts;
 
@@ -14,14 +14,14 @@ public class Bank {
 		return accounts;
 	}
 
-	public void addAccount(String accountType, int accountId, double accountApr, int deposit) {
-		if (accountType == "Checking") {
+	public void addAccount(String accountType, int accountId, double accountApr, double deposit) {
+		if ("Checking".equals(accountType)) {
 			accounts.put(accountId, new CheckingAccount(accountApr, accountId, accountType));
 		}
-		if (accountType == "Savings") {
+		if ("Savings".equals(accountType)) {
 			accounts.put(accountId, new SavingsAccount(accountApr, accountId, accountType));
 		}
-		if (accountType == "Certificate of Deposit") {
+		if ("cd".equals(accountType)) {
 			accounts.put(accountId, new CertificateOfDeposit(accountApr, accountId, deposit, accountType));
 		}
 
@@ -47,7 +47,7 @@ public class Bank {
 		return accounts.get(accountID).getApr();
 	}
 
-	public int getBalance(int accountID) {
+	public double getBalance(int accountID) {
 		return accounts.get(accountID).getBalance();
 	}
 

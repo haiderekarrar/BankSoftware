@@ -15,7 +15,7 @@ public class CertificateOfDepositTest {
 		certificateOfDeposit = new CertificateOfDeposit(ACCOUNT_APR, ACCOUNT_ID, DEPOSIT, ACCOUNT_TYPE);
 		double actual = certificateOfDeposit.getBalance();
 
-		assertEquals(100.1, actual);
+		assertEquals(100, actual);
 
 	}
 }

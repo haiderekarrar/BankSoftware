@@ -1,15 +1,27 @@
 public class CommandProcessor {
 	protected Bank bank;
+	private DepositCommandProcessor depositCommandProcessor;
+	private CreateCommandProcessor createCommandProcessor;
 
-	public CommandProcessor(Bank bank) {
+	public CommandProcessor(Bank bank, DepositCommandProcessor depositCommandProcessor,
+			CreateCommandProcessor createCommandProcessor) {
 		this.bank = bank;
+		this.depositCommandProcessor = depositCommandProcessor;
+		this.createCommandProcessor = createCommandProcessor;
 	}
 
-	public String[] commandParser(String command) {
+	public void commandParser(String command) {
 		String[] parts = command.split(" ");
-		return parts;
+		String commandType = parts[0];
+		if (("create".equals(commandType))) {
+			createCommandProcessor.commandProcessor(parts);
+		} else if (("deposit".equals(commandType))) {
+			depositCommandProcessor.commandProcessor(parts);
+		}
+
 	}
 
-	void commandProcessor(String[] parts) {
+	protected void commandProcessor(String[] parts) {
+		// Default implementation, can be overridden by child classes
 	}
 }
