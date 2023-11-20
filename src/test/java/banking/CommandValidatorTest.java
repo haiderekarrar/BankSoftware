@@ -1,3 +1,5 @@
+package banking;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -10,7 +12,7 @@ public class CommandValidatorTest {
 	private DepositValidator depositValidator;
 	private CreateValidator createValidator;
 
-	private Bank bank; // Replace with your actual Bank implementation
+	private Bank bank; // Replace with your actual banking.Bank implementation
 
 	@BeforeEach
 	void setUp() {

@@ -1,3 +1,5 @@
+package banking;
+
 public class CreateValidator extends CommandValidator {
 	public CreateValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator) {
 		super(bank, depositValidator, createValidator);
@@ -8,7 +10,7 @@ public class CreateValidator extends CommandValidator {
 		if (parts.length != 4 && parts.length != 5) {
 			return false;
 		}
-		String accountType = parts[1]; // Account type is the second word
+		String accountType = parts[1]; // banking.Account type is the second word
 		String accountTypeUpperCase = accountType.toUpperCase();
 
 		if ("CD".equals(accountTypeUpperCase) && parts.length == 5) {

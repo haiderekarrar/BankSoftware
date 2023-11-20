@@ -1,3 +1,5 @@
+package banking;
+
 public class DepositValidator extends CommandValidator {
 	public DepositValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator) {
 		super(bank, depositValidator, createValidator);
@@ -8,7 +10,7 @@ public class DepositValidator extends CommandValidator {
 		if (parts.length != 3) {
 			return false;
 		}
-		String accountID = parts[1]; // Account type is the second word
+		String accountID = parts[1]; // banking.Account type is the second word
 
 		if (!isValidAccountId(accountID)) {
 			return false;

@@ -1,3 +1,5 @@
+package banking;
+
 public class DepositCommandProcessor extends CommandProcessor {
 	public DepositCommandProcessor(Bank bank, DepositCommandProcessor depositCommandProcessor,
 			CreateCommandProcessor createCommandProcessor) {
