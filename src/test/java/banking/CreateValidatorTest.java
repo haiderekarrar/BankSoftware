@@ -8,18 +8,27 @@ import org.junit.jupiter.api.Test;
 
 public class CreateValidatorTest {
 
-	private DepositValidator depositValidator;
+	private WithdrawValidator withdrawValidator;
 	private CreateValidator createValidator;
 	private CommandValidator commandValidator;
-
-	private Bank bank; // Replace with your actual banking.Bank implementation
+	private DepositValidator depositValidator;
+	private Bank bank;
+	private TransferValidator transferValidator;
 
 	@BeforeEach
 	void setUp() {
 		bank = new Bank();
-		depositValidator = new DepositValidator(bank, depositValidator, createValidator);
-		createValidator = new CreateValidator(bank, depositValidator, createValidator);
-		commandValidator = new CommandValidator(bank, depositValidator, createValidator);
+
+		depositValidator = new DepositValidator(bank, depositValidator, createValidator, withdrawValidator,
+				transferValidator);
+		createValidator = new CreateValidator(bank, depositValidator, createValidator, withdrawValidator,
+				transferValidator);
+		withdrawValidator = new WithdrawValidator(bank, depositValidator, createValidator, withdrawValidator,
+				transferValidator);
+		transferValidator = new TransferValidator(bank, depositValidator, createValidator, withdrawValidator,
+				transferValidator);
+		commandValidator = new CommandValidator(bank, depositValidator, createValidator, withdrawValidator,
+				transferValidator);
 	}
 
 	@Test

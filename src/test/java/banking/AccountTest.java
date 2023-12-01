@@ -71,4 +71,21 @@ public class AccountTest {
 
 		assertEquals(0, actual);
 	}
+
+	@Test
+	public void testAccountMutants1() {
+
+		// Test Case 1: Negative balance (should be corrected to 0)
+		account.setBalance(-100.0);
+		assertEquals(0.0, account.getBalance());
+
+	}
+
+	@Test
+	public void testAccountMutants2() {
+
+		// Test Case N: Valid balance (should remain unchanged)
+		account.setBalance(500.0);
+		assertEquals(500.0, account.getBalance());
+	}
 }

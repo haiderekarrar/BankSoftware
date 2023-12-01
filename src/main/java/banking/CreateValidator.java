@@ -1,8 +1,9 @@
 package banking;
 
 public class CreateValidator extends CommandValidator {
-	public CreateValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator) {
-		super(bank, depositValidator, createValidator);
+	public CreateValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator,
+			WithdrawValidator withdrawValidator, TransferValidator transferValidator) {
+		super(bank, depositValidator, createValidator, withdrawValidator, transferValidator);
 	}
 
 	public boolean validateCommand(String[] parts) {
@@ -11,6 +12,7 @@ public class CreateValidator extends CommandValidator {
 			return false;
 		}
 		String accountType = parts[1]; // banking.Account type is the second word
+
 		String accountTypeUpperCase = accountType.toUpperCase();
 
 		if ("CD".equals(accountTypeUpperCase) && parts.length == 5) {

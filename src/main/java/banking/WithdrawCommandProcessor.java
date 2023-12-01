@@ -1,7 +1,8 @@
 package banking;
 
-public class DepositCommandProcessor extends CommandProcessor {
-	public DepositCommandProcessor(Bank bank, DepositCommandProcessor depositCommandProcessor,
+public class WithdrawCommandProcessor extends CommandProcessor {
+
+	public WithdrawCommandProcessor(Bank bank, DepositCommandProcessor depositCommandProcessor,
 			CreateCommandProcessor createCommandProcessor, WithdrawCommandProcessor withdrawCommandProcessor,
 			TransferCommandProcessor transferCommandProcessor) {
 		super(bank, depositCommandProcessor, createCommandProcessor, withdrawCommandProcessor,
@@ -11,9 +12,8 @@ public class DepositCommandProcessor extends CommandProcessor {
 	@Override
 	public void commandProcessor(String[] parts) {
 		int accountID = Integer.parseInt(parts[1]);
-		double amountToDeposit = Integer.parseInt(parts[2]);
-		bank.depositMoneyFromBank(accountID, amountToDeposit);
+		double amountToWithdraw = Integer.parseInt(parts[2]);
+		bank.withdrawMoneyFromBank(accountID, amountToWithdraw);
 
 	}
-
 }

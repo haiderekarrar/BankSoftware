@@ -4,12 +4,17 @@ public class CommandProcessor {
 	protected Bank bank;
 	private DepositCommandProcessor depositCommandProcessor;
 	private CreateCommandProcessor createCommandProcessor;
+	private WithdrawCommandProcessor withdrawCommandProcessor;
+	private TransferCommandProcessor transferCommandProcessor;
 
 	public CommandProcessor(Bank bank, DepositCommandProcessor depositCommandProcessor,
-			CreateCommandProcessor createCommandProcessor) {
+			CreateCommandProcessor createCommandProcessor, WithdrawCommandProcessor withdrawCommandProcessor,
+			TransferCommandProcessor transferCommandProcessor) {
 		this.bank = bank;
 		this.depositCommandProcessor = depositCommandProcessor;
 		this.createCommandProcessor = createCommandProcessor;
+		this.withdrawCommandProcessor = withdrawCommandProcessor;
+		this.transferCommandProcessor = transferCommandProcessor;
 	}
 
 	public void commandParser(String command) {
@@ -19,6 +24,10 @@ public class CommandProcessor {
 			createCommandProcessor.commandProcessor(parts);
 		} else if (("deposit".equals(commandType))) {
 			depositCommandProcessor.commandProcessor(parts);
+		} else if (("withdraw".equals(commandType))) {
+			withdrawCommandProcessor.commandProcessor(parts);
+		} else if (("transfer".equals(commandType))) {
+			transferCommandProcessor.commandProcessor(parts);
 		}
 
 	}

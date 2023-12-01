@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class DepositValidatorTest {
+public class WithdrawValidatorTest {
 	private WithdrawValidator withdrawValidator;
 	private CreateValidator createValidator;
 	private CommandValidator commandValidator;
@@ -31,36 +31,36 @@ public class DepositValidatorTest {
 	}
 
 	@Test
-	void valid_deposit_command() {
+	void valid_withdraw_command() {
 
 		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "deposit 12345677 800";
+		String command = "withdraw 12345677 300";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
 
 	}
 
 	@Test
-	void deposit_command_is_case_insensitive() {
+	void withdraw_command_is_case_insensitive() {
 
 		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "dEposIt 12345677 800";
+		String command = "wIthDraW 12345677 300";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
 
 	}
 
 	@Test
-	void typo_in_deposit() {
+	void typo_in_withdraw() {
 
 		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "dEeposIt 12345677 800";
+		String command = "withdrew 12345677 800";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
 	}
 
 	@Test
-	void deposit_is_absent() {
+	void withdraw_is_absent() {
 		bank.addAccount("Checking", 12345677, 0.6, 0);
 		String command = "12345677 800";
 		boolean actual = commandValidator.validate(command);
@@ -72,42 +72,33 @@ public class DepositValidatorTest {
 	void numeric_command() {
 
 		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "dEeposI12545t 12345677 800";
+		String command = "withdra12545w 12345677 800";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
 
 	}
 
 	@Test
-	void zero_can_be_deposited_in_savings() {
+	void zero_can_be_withdrawn_from_savings() {
 		bank.addAccount("Savings", 12345677, 0.6, 0);
-		String command = "deposit 12345677 0";
+		String command = "withdraw 12345677 0";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
 
 	}
 
 	@Test
-	void cd_cannot_be_deposited_into() {
-		bank.addAccount("cd", 12345677, 0.6, 1200);
-		String command = "deposit 12345677 800";
+	void zero_can_be_withdrawn_from_checking() {
+		bank.addAccount("Checking", 12345677, 0.6, 0);
+		String command = "withdraw 12345677 0";
 		boolean actual = commandValidator.validate(command);
-		assertFalse(actual);
+		assertTrue(actual);
 
 	}
 
 	@Test
-	void zero_cannot_be_deposited_into_cd() {
-		bank.addAccount("cd", 12345677, 0.6, 0);
-		String command = "deposit 12345677 0";
-		boolean actual = commandValidator.validate(command);
-		assertFalse(actual);
-
-	}
-
-	@Test
-	void attempt_to_deposit_into_account_that_does_not_exist() {
-		String command = "deposit 12345677 800";
+	void attempt_to_withdraw_from_account_that_does_not_exist() {
+		String command = "withdraw 12345677 300";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
 
@@ -116,168 +107,148 @@ public class DepositValidatorTest {
 	@Test
 	void invalid_account_id() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "deposit 12345677888 800";
+		bank.addAccount("checking", 12345677, 0.6, 0);
+		String command = "withdraw 12345677888 800";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
 
 	}
 
 	@Test
-	void non_numeric_deposit() {
+	void non_numeric_withdraw() {
 		bank.addAccount("Savings", 12345677, 0.6, 0);
-		String command = "deposit 12345677 asdasf";
+		String command = "withdraw 12345677 asdasf";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
 
 	}
 
 	@Test
-	void deposit_can_be_a_decimal() {
+	void withdraw_can_be_a_decimal() {
 
 		bank.addAccount("Savings", 12345677, 0.6, 0);
-		String command = "deposit 12345677 800.2";
+		String command = "withdraw 12345677 800.2";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
 
 	}
 
 	@Test
-	void amount_to_deposit_cannot_be_negative_for_savings() {
+	void amount_to_withdraw_cannot_be_negative_for_savings() {
 
 		bank.addAccount("Savings", 12345677, 0.6, 0);
-		String command = "deposit 12345677 -100";
+		String command = "withdraw 12345677 -100";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
 
 	}
 
 	@Test
-	void zero_can_be_deposited_in_checking() {
-
-		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "deposit 12345677 0";
-		boolean actual = commandValidator.validate(command);
-		assertTrue(actual);
-
-	}
-
-	@Test
-	void amount_to_deposit_cannot_be_negative_for_checking() {
+	void amount_to_withdraw_cannot_be_negative_for_checking() {
 
 		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "deposit 12345677 -100";
+		String command = "withdraw 12345677 -100";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
 
 	}
 
 	@Test
-	void amount_to_deposit_cannot_be_greater_than_2500_in_savings() {
+	void amount_to_withdraw_cannot_be_greater_than_1000_in_savings() {
 
 		bank.addAccount("Savings", 12345677, 0.6, 0);
-		String command = "deposit 12345677 3000";
+		String command = "withdraw 12345677 3000";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
 
 	}
 
 	@Test
-	void amount_to_deposit_can_be_2500_in_savings() {
+	void amount_to_withdraw_can_be_1000_in_savings() {
 
 		bank.addAccount("Savings", 12345677, 0.6, 0);
-		String command = "deposit 12345677 2500";
+		String command = "withdraw 12345677 1000";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
 
 	}
 
 	@Test
-	void amount_to_deposit_can_be_2499_in_savings() {
+	void amount_to_withdraw_can_be_999_in_savings() {
 
 		bank.addAccount("Savings", 12345677, 0.6, 0);
-		String command = "deposit 12345677 2499";
+		String command = "withdraw 12345677 999";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
 
 	}
 
 	@Test
-	void amount_to_deposit_cannot_be_2501_in_savings() {
+	void amount_to_withdraw_cannot_be_1001_in_savings() {
 		String commandType = "deposit";
 		bank.addAccount("Savings", 12345677, 0.6, 0);
-		String command = "deposit 12345677 2501";
+		String command = "withdraw 12345677 1001";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
 
 	}
 
 	@Test
-	void amount_to_deposit_cannot_be_greater_than_1000_in_checking() {
+	void amount_to_withdraw_cannot_be_greater_than_400_in_checking() {
 
 		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "deposit 12345677 1500";
+		String command = "withdraw 12345677 1500";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
 
 	}
 
 	@Test
-	void amount_to_deposit_cannot_be_1001_in_checking() {
+	void amount_to_withdraw_cannot_be_401_in_checking() {
 
 		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "deposit 12345677 1001";
+		String command = "withdraw 12345677 401";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
 
 	}
 
 	@Test
-	void amount_to_deposit_can_be_1000_in_checking() {
+	void amount_to_withdraw_can_be_400_in_checking() {
 
 		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "deposit 12345677 1000";
+		String command = "withdraw 12345677 400";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
 
 	}
 
 	@Test
-	void amount_to_deposit_can_be_999_in_checking() {
+	void amount_to_withdraw_can_be_399_in_checking() {
 
 		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "deposit 12345677 999";
+		String command = "withdraw 12345677 399";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
 
 	}
 
 	@Test
-	void amount_to_deposit_can_be_1_in_checking() {
+	void amount_to_withdraw_can_be_1_in_checking() {
 		bank.addAccount("Checking", 12345677, 0.6, 0);
-		String command = "deposit 12345677 1";
+		String command = "withdraw 12345677 1";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
 
 	}
 
 	@Test
-	void amount_to_deposit_can_be_1_in_savings() {
+	void amount_to_withdraw_can_be_1_in_savings() {
 
 		bank.addAccount("Savings", 12345677, 0.6, 0);
-		String command = "deposit 12345677 1";
+		String command = "withdraw 12345677 1";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
-
-	}
-
-	@Test
-	void amount_cannot_be_deposited_in_cd() {
-
-		bank.addAccount("cd", 12345677, 0.6, 120.2);
-		String command = "deposit 12345677 0";
-		boolean actual = commandValidator.validate(command);
-		assertFalse(actual);
 
 	}
 

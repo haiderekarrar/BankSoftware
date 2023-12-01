@@ -8,18 +8,26 @@ import org.junit.jupiter.api.Test;
 
 public class CreateCommandProcessorTest {
 
-	private CreateCommandProcessor createCommandProcessor;
-	private Bank bank;
 	private DepositCommandProcessor depositCommandProcessor;
+	private Bank bank;
+	private CreateCommandProcessor createCommandProcessor;
+	private WithdrawCommandProcessor withdrawCommandProcessor;
+	private TransferCommandProcessor transferCommandProcessor;
 	private CommandProcessor commandProcessor;
 
 	@BeforeEach
 	void setUp() {
 		bank = new Bank();
-		depositCommandProcessor = new DepositCommandProcessor(bank, depositCommandProcessor, createCommandProcessor);
-		createCommandProcessor = new CreateCommandProcessor(bank, depositCommandProcessor, createCommandProcessor);
-		commandProcessor = new CommandProcessor(bank, depositCommandProcessor, createCommandProcessor);
-
+		depositCommandProcessor = new DepositCommandProcessor(bank, depositCommandProcessor, createCommandProcessor,
+				withdrawCommandProcessor, transferCommandProcessor);
+		createCommandProcessor = new CreateCommandProcessor(bank, depositCommandProcessor, createCommandProcessor,
+				withdrawCommandProcessor, transferCommandProcessor);
+		withdrawCommandProcessor = new WithdrawCommandProcessor(bank, depositCommandProcessor, createCommandProcessor,
+				withdrawCommandProcessor, transferCommandProcessor);
+		transferCommandProcessor = new TransferCommandProcessor(bank, depositCommandProcessor, createCommandProcessor,
+				withdrawCommandProcessor, transferCommandProcessor);
+		commandProcessor = new CommandProcessor(bank, depositCommandProcessor, createCommandProcessor,
+				withdrawCommandProcessor, transferCommandProcessor);
 	}
 
 	@Test
