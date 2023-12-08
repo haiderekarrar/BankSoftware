@@ -8,7 +8,7 @@ public class Bank {
 
 	private Map<Integer, Account> accounts;
 
-	Bank() {
+	public Bank() {
 		accounts = new HashMap<>();
 	}
 
@@ -17,13 +17,13 @@ public class Bank {
 	}
 
 	public void addAccount(String accountType, int accountId, double accountApr, double deposit) {
-		if ("Checking".equals(accountType)) {
+		if ("CHECKING".equals(accountType)) {
 			accounts.put(accountId, new CheckingAccount(accountApr, accountId, accountType));
 		}
-		if ("Savings".equals(accountType)) {
+		if ("SAVINGS".equals(accountType)) {
 			accounts.put(accountId, new SavingsAccount(accountApr, accountId, accountType));
 		}
-		if ("cd".equals(accountType)) {
+		if ("CD".equals(accountType)) {
 			accounts.put(accountId, new CertificateOfDeposit(accountApr, accountId, deposit, accountType));
 		}
 
@@ -56,4 +56,29 @@ public class Bank {
 	public String getAccountTypeByAccountID(int accountID) {
 		return accounts.get(accountID).getAccountType();
 	}
+
+	public int getMonthsPassed(int accountID) {
+		return accounts.get(accountID).getMonthsPassed();
+	}
+
+	public void setMonthsPassed(int accountID, int monthsPassed) {
+		accounts.get(accountID).setMonthsPassed(monthsPassed);
+	}
+
+	public int getSavingsWithdrawal(int accountID) {
+		return accounts.get(accountID).getSavingsWithdrawal();
+	}
+
+	public void setSavingsWithdrawal(int accountID, int toSet) {
+		accounts.get(accountID).setSavingsWithdrawal(toSet);
+	}
+
+	public int getCdWithdrawal(int accountID) {
+		return accounts.get(accountID).getCdWithdrawal();
+	}
+
+	public void setCdWithdrawal(int accountID, int toSet) {
+		accounts.get(accountID).setCdWithdrawal(toSet);
+	}
+
 }

@@ -13,27 +13,30 @@ public class DepositValidatorTest {
 	private DepositValidator depositValidator;
 	private Bank bank;
 	private TransferValidator transferValidator;
+	private PassValidator passValidator;
 
 	@BeforeEach
 	void setUp() {
 		bank = new Bank();
 
 		depositValidator = new DepositValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 		createValidator = new CreateValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 		withdrawValidator = new WithdrawValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 		transferValidator = new TransferValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
+		passValidator = new PassValidator(bank, depositValidator, createValidator, withdrawValidator, transferValidator,
+				passValidator);
 		commandValidator = new CommandValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 	}
 
 	@Test
 	void valid_deposit_command() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "deposit 12345677 800";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
@@ -43,7 +46,7 @@ public class DepositValidatorTest {
 	@Test
 	void deposit_command_is_case_insensitive() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "dEposIt 12345677 800";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
@@ -53,7 +56,7 @@ public class DepositValidatorTest {
 	@Test
 	void typo_in_deposit() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "dEeposIt 12345677 800";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -61,7 +64,7 @@ public class DepositValidatorTest {
 
 	@Test
 	void deposit_is_absent() {
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "12345677 800";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -71,7 +74,7 @@ public class DepositValidatorTest {
 	@Test
 	void numeric_command() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "dEeposI12545t 12345677 800";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -80,7 +83,7 @@ public class DepositValidatorTest {
 
 	@Test
 	void zero_can_be_deposited_in_savings() {
-		bank.addAccount("Savings", 12345677, 0.6, 0);
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
 		String command = "deposit 12345677 0";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
@@ -89,7 +92,7 @@ public class DepositValidatorTest {
 
 	@Test
 	void cd_cannot_be_deposited_into() {
-		bank.addAccount("cd", 12345677, 0.6, 1200);
+		bank.addAccount("CD", 12345677, 0.6, 1200);
 		String command = "deposit 12345677 800";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -98,7 +101,7 @@ public class DepositValidatorTest {
 
 	@Test
 	void zero_cannot_be_deposited_into_cd() {
-		bank.addAccount("cd", 12345677, 0.6, 0);
+		bank.addAccount("CD", 12345677, 0.6, 0);
 		String command = "deposit 12345677 0";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -116,7 +119,7 @@ public class DepositValidatorTest {
 	@Test
 	void invalid_account_id() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "deposit 12345677888 800";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -125,7 +128,7 @@ public class DepositValidatorTest {
 
 	@Test
 	void non_numeric_deposit() {
-		bank.addAccount("Savings", 12345677, 0.6, 0);
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
 		String command = "deposit 12345677 asdasf";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -135,7 +138,7 @@ public class DepositValidatorTest {
 	@Test
 	void deposit_can_be_a_decimal() {
 
-		bank.addAccount("Savings", 12345677, 0.6, 0);
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
 		String command = "deposit 12345677 800.2";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
@@ -145,7 +148,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_to_deposit_cannot_be_negative_for_savings() {
 
-		bank.addAccount("Savings", 12345677, 0.6, 0);
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
 		String command = "deposit 12345677 -100";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -155,7 +158,7 @@ public class DepositValidatorTest {
 	@Test
 	void zero_can_be_deposited_in_checking() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "deposit 12345677 0";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
@@ -165,7 +168,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_to_deposit_cannot_be_negative_for_checking() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "deposit 12345677 -100";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -175,7 +178,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_to_deposit_cannot_be_greater_than_2500_in_savings() {
 
-		bank.addAccount("Savings", 12345677, 0.6, 0);
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
 		String command = "deposit 12345677 3000";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -185,7 +188,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_to_deposit_can_be_2500_in_savings() {
 
-		bank.addAccount("Savings", 12345677, 0.6, 0);
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
 		String command = "deposit 12345677 2500";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
@@ -195,7 +198,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_to_deposit_can_be_2499_in_savings() {
 
-		bank.addAccount("Savings", 12345677, 0.6, 0);
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
 		String command = "deposit 12345677 2499";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
@@ -205,7 +208,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_to_deposit_cannot_be_2501_in_savings() {
 		String commandType = "deposit";
-		bank.addAccount("Savings", 12345677, 0.6, 0);
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
 		String command = "deposit 12345677 2501";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -215,7 +218,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_to_deposit_cannot_be_greater_than_1000_in_checking() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "deposit 12345677 1500";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -225,7 +228,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_to_deposit_cannot_be_1001_in_checking() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "deposit 12345677 1001";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);
@@ -235,7 +238,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_to_deposit_can_be_1000_in_checking() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "deposit 12345677 1000";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
@@ -245,7 +248,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_to_deposit_can_be_999_in_checking() {
 
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "deposit 12345677 999";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
@@ -254,7 +257,7 @@ public class DepositValidatorTest {
 
 	@Test
 	void amount_to_deposit_can_be_1_in_checking() {
-		bank.addAccount("Checking", 12345677, 0.6, 0);
+		bank.addAccount("CHECKING", 12345677, 0.6, 0);
 		String command = "deposit 12345677 1";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
@@ -264,7 +267,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_to_deposit_can_be_1_in_savings() {
 
-		bank.addAccount("Savings", 12345677, 0.6, 0);
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
 		String command = "deposit 12345677 1";
 		boolean actual = commandValidator.validate(command);
 		assertTrue(actual);
@@ -274,7 +277,7 @@ public class DepositValidatorTest {
 	@Test
 	void amount_cannot_be_deposited_in_cd() {
 
-		bank.addAccount("cd", 12345677, 0.6, 120.2);
+		bank.addAccount("CD", 12345677, 0.6, 120.2);
 		String command = "deposit 12345677 0";
 		boolean actual = commandValidator.validate(command);
 		assertFalse(actual);

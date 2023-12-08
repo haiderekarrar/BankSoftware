@@ -2,8 +2,8 @@ package banking;
 
 public class TransferValidator extends CommandValidator {
 	public TransferValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator,
-			WithdrawValidator withdrawValidator, TransferValidator transferValidator) {
-		super(bank, depositValidator, createValidator, withdrawValidator, transferValidator);
+			WithdrawValidator withdrawValidator, TransferValidator transferValidator, PassValidator passValidator) {
+		super(bank, depositValidator, createValidator, withdrawValidator, transferValidator, passValidator);
 	}
 
 	public boolean validateCommand(String[] parts) {
@@ -58,14 +58,14 @@ public class TransferValidator extends CommandValidator {
 
 				// implimenting savings to savings
 			} else if ((transferFromAccountType.equals("SAVINGS")) && (transferToAccountType.equals("SAVINGS"))) {
-				if (!(withdrawal_rule_for_savings(amountToTransfer))) {
+				if (!(withdrawal_rule_for_savings(Integer.parseInt(transferFromAccountID), amountToTransfer))) {
 					return false;
 				}
 
 				// implimenting savings to checking
 
 			} else if ((transferFromAccountType.equals("SAVINGS")) && (transferToAccountType.equals("CHECKING"))) {
-				if (!(withdrawal_rule_for_savings(amountToTransfer))) {
+				if (!(withdrawal_rule_for_savings(Integer.parseInt(transferFromAccountID), amountToTransfer))) {
 					return false;
 				}
 

@@ -2,8 +2,11 @@ package banking;
 
 public abstract class Account {
 	private double balance;
+	private int months = 0;
 	private double apr;
 	private int id;
+	private int savingsWithdrawal = 0;
+	private int cdWithdrawal = 1;
 	private String accountType;
 
 	public Account(double apr, int id, String accountType) {
@@ -47,8 +50,34 @@ public abstract class Account {
 	public void withdrawMoney(double amountToWithdraw) {
 		if (amountToWithdraw > getBalance()) {
 			balance = 0;
+		} else {
+			balance -= amountToWithdraw;
 		}
-		balance -= amountToWithdraw;
+	}
+
+	/////////////////
+	public int getMonthsPassed() {
+		return months;
+	}
+
+	public void setMonthsPassed(int monthsPassed) {
+		months += monthsPassed;
+	}
+
+	public int getCdWithdrawal() {
+		return cdWithdrawal;
+	}
+
+	public void setCdWithdrawal(int toSet) {
+		cdWithdrawal = toSet;
+	}
+
+	public int getSavingsWithdrawal() {
+		return savingsWithdrawal;
+	}
+
+	public void setSavingsWithdrawal(int toSet) {
+		savingsWithdrawal = toSet;
 	}
 
 }

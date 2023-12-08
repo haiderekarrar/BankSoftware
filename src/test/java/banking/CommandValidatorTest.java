@@ -14,21 +14,24 @@ public class CommandValidatorTest {
 	private DepositValidator depositValidator;
 	private Bank bank;
 	private TransferValidator transferValidator;
+	private PassValidator passValidator;
 
 	@BeforeEach
 	void setUp() {
 		bank = new Bank();
 
 		depositValidator = new DepositValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 		createValidator = new CreateValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 		withdrawValidator = new WithdrawValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 		transferValidator = new TransferValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
+		passValidator = new PassValidator(bank, depositValidator, createValidator, withdrawValidator, transferValidator,
+				passValidator);
 		commandValidator = new CommandValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 	}
 
 	@Test
@@ -57,7 +60,7 @@ public class CommandValidatorTest {
 
 	@Test
 	void case_insensitive_deposit_command() {
-		bank.addAccount("Savings", 12345678, 5, 0);
+		bank.addAccount("SAVINGS", 12345678, 5, 0);
 		String command = "dEpOsit 12345678 100";
 		assertTrue(commandValidator.validate(command));
 	}
@@ -91,7 +94,7 @@ public class CommandValidatorTest {
 
 	@Test
 	void duplicate_account_id_is_invalid() {
-		bank.addAccount("Checking", 12345678, 0.6, 0);
+		bank.addAccount("CHECKING", 12345678, 0.6, 0);
 		boolean actual = commandValidator.doesAccountExist("12345678");
 		assertTrue(actual);
 	}

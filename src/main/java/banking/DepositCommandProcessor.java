@@ -3,9 +3,9 @@ package banking;
 public class DepositCommandProcessor extends CommandProcessor {
 	public DepositCommandProcessor(Bank bank, DepositCommandProcessor depositCommandProcessor,
 			CreateCommandProcessor createCommandProcessor, WithdrawCommandProcessor withdrawCommandProcessor,
-			TransferCommandProcessor transferCommandProcessor) {
-		super(bank, depositCommandProcessor, createCommandProcessor, withdrawCommandProcessor,
-				transferCommandProcessor);
+			TransferCommandProcessor transferCommandProcessor, PassCommandProcessor passCommandProcessor) {
+		super(bank, depositCommandProcessor, createCommandProcessor, withdrawCommandProcessor, transferCommandProcessor,
+				passCommandProcessor);
 	}
 
 	@Override

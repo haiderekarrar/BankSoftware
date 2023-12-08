@@ -13,7 +13,7 @@ ask whether giving an ammount to addaccount is okay since I seperate checking/sa
 public class BankTest {
 	public static final int ACCOUNT_ID = 14516562;
 	public static final double ACCOUNT_APR = 2.1;
-	public static final String ACCOUNT_TYPE = "Checking";
+	public static final String ACCOUNT_TYPE = "CHECKING";
 	public static final int CD_DEPOSIT = 150;
 
 	Bank bank;

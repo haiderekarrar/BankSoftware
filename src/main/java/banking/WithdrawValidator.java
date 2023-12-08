@@ -1,9 +1,11 @@
 package banking;
 
 public class WithdrawValidator extends CommandValidator {
+	Bank bank;
+
 	public WithdrawValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator,
-			WithdrawValidator withdrawValidator, TransferValidator transferValidator) {
-		super(bank, depositValidator, createValidator, withdrawValidator, transferValidator);
+			WithdrawValidator withdrawValidator, TransferValidator transferValidator, PassValidator passValidator) {
+		super(bank, depositValidator, createValidator, withdrawValidator, transferValidator, passValidator);
 	}
 
 	public boolean validateCommand(String[] parts) {
@@ -11,6 +13,7 @@ public class WithdrawValidator extends CommandValidator {
 		if (parts.length != 3) {
 			return false;
 		}
+
 		String accountID = parts[1]; // banking.Account type is the second word
 		if (!isValidAccountId(accountID)) {
 			return false;
@@ -29,11 +32,11 @@ public class WithdrawValidator extends CommandValidator {
 				return false;
 
 			} else if (accountType.equals("SAVINGS")) {
-				return withdrawal_rule_for_savings(amountToWithdraw);
+				return withdrawal_rule_for_savings(Integer.parseInt(accountID), amountToWithdraw);
 			} else if (accountType.equals("CHECKING")) {
 				return withdrawal_rule_for_checking(amountToWithdraw);
 			} else if (accountType.equals("CD")) {
-				return false;// implementation to be added which involves the pass time class
+				return withdrawal_rule_for_cd(Integer.parseInt(accountID), amountToWithdraw);
 			}
 
 		} catch (NumberFormatException e) {

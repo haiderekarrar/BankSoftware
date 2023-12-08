@@ -2,8 +2,8 @@ package banking;
 
 public class CreateValidator extends CommandValidator {
 	public CreateValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator,
-			WithdrawValidator withdrawValidator, TransferValidator transferValidator) {
-		super(bank, depositValidator, createValidator, withdrawValidator, transferValidator);
+			WithdrawValidator withdrawValidator, TransferValidator transferValidator, PassValidator passValidator) {
+		super(bank, depositValidator, createValidator, withdrawValidator, transferValidator, passValidator);
 	}
 
 	public boolean validateCommand(String[] parts) {

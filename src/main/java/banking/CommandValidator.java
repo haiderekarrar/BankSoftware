@@ -7,33 +7,38 @@ public class CommandValidator {
 	private CreateValidator createValidator;
 	private WithdrawValidator withdrawValidator;
 	private TransferValidator transferValidator;
+	private PassValidator passValidator;
 
 	public CommandValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator,
-			WithdrawValidator withdrawValidator, TransferValidator transferValidator) {
+			WithdrawValidator withdrawValidator, TransferValidator transferValidator, PassValidator passValidator) {
 		this.bank = bank;
 		this.createValidator = createValidator;
 		this.depositValidator = depositValidator;
 		this.withdrawValidator = withdrawValidator;
 		this.transferValidator = transferValidator;
+		this.passValidator = passValidator;
 	}
 
 	public boolean validate(String command) {
 		String[] parts = command.split(" ");
-		if (parts.length > 5 || parts.length < 3) {
+		if (parts.length > 5 || parts.length < 2) {
 			return false;
 		}
-		String commandType = parts[0];
-		if (!(commandType.toUpperCase().equals("CREATE") || commandType.toUpperCase().equals("DEPOSIT")
-				|| commandType.toUpperCase().equals("WITHDRAW") || commandType.toUpperCase().equals("TRANSFER"))) {
+		String commandType = parts[0].toUpperCase();
+		if (!(commandType.equals("CREATE") || commandType.equals("DEPOSIT") || commandType.equals("WITHDRAW")
+				|| commandType.equals("TRANSFER") || commandType.equals("PASS"))) {
 			return false;
-		} else if (commandType.toUpperCase().equals("CREATE")) {
+		} else if (commandType.equals("CREATE")) {
 			return createValidator.validateCommand(parts);
-		} else if (commandType.toUpperCase().equals("DEPOSIT")) {
+		} else if (commandType.equals("DEPOSIT")) {
 			return depositValidator.validateCommand(parts);
-		} else if (commandType.toUpperCase().equals("WITHDRAW")) {
+		} else if (commandType.equals("PASS")) {
+			return passValidator.validateCommand(parts);
+		} else if (commandType.equals("WITHDRAW")) {
 			return withdrawValidator.validateCommand(parts);
-		} else if (commandType.toUpperCase().equals("TRANSFER")) {
+		} else if (commandType.equals("TRANSFER")) {
 			return transferValidator.validateCommand(parts);
+
 		}
 
 		return true;
@@ -80,10 +85,24 @@ public class CommandValidator {
 
 	}
 
-	protected boolean withdrawal_rule_for_savings(double amountToWithdraw) {
-		if (amountToWithdraw > 1000) {
+	protected boolean withdrawal_rule_for_savings(int accountID, double amountToWithdraw) {
+
+		if (bank.getSavingsWithdrawal(accountID) == 1) {
+			return false;
+		} else if (amountToWithdraw > 1000) {
 			return false;
 		}
+		return true;
+	}
+
+	protected boolean withdrawal_rule_for_cd(int accountID, double amountToWithdraw) {
+
+		if (bank.getCdWithdrawal(accountID) == 1) {
+			return false;
+		} else if (amountToWithdraw < bank.getBalance(accountID)) {
+			return false;
+		}
+
 		return true;
 	}
 

@@ -14,21 +14,24 @@ public class CreateValidatorTest {
 	private DepositValidator depositValidator;
 	private Bank bank;
 	private TransferValidator transferValidator;
+	private PassValidator passValidator;
 
 	@BeforeEach
 	void setUp() {
 		bank = new Bank();
 
 		depositValidator = new DepositValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 		createValidator = new CreateValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 		withdrawValidator = new WithdrawValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 		transferValidator = new TransferValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
+		passValidator = new PassValidator(bank, depositValidator, createValidator, withdrawValidator, transferValidator,
+				passValidator);
 		commandValidator = new CommandValidator(bank, depositValidator, createValidator, withdrawValidator,
-				transferValidator);
+				transferValidator, passValidator);
 	}
 
 	@Test
