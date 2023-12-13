@@ -42,19 +42,19 @@ public class CreateCommandProcessorTest {
 	@Test
 	void create_account_with_valid_account_type_checking_according_to_create_command() {
 		commandProcessor.commandParser("create CHECKING 12345678 9.8");
-		assertEquals("CHECKING", bank.getAccountTypeByAccountID(12345678));
+		assertEquals("Checking", bank.getAccountTypeByAccountID(12345678));
 	}
 
 	@Test
 	void create_account_with_valid_account_type_savings_according_to_create_command() {
 		commandProcessor.commandParser("create SAVINGS 12345678 9.8");
-		assertEquals("SAVINGS", bank.getAccountTypeByAccountID(12345678));
+		assertEquals("Savings", bank.getAccountTypeByAccountID(12345678));
 	}
 
 	@Test
 	void create_account_with_valid_account_type_cd_according_to_create_command() {
 		commandProcessor.commandParser("create CD 12345678 9.8 1200");
-		assertEquals("CD", bank.getAccountTypeByAccountID(12345678));
+		assertEquals("Cd", bank.getAccountTypeByAccountID(12345678));
 	}
 
 	@Test

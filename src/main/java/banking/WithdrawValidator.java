@@ -1,7 +1,6 @@
 package banking;
 
 public class WithdrawValidator extends CommandValidator {
-	Bank bank;
 
 	public WithdrawValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator,
 			WithdrawValidator withdrawValidator, TransferValidator transferValidator, PassValidator passValidator) {

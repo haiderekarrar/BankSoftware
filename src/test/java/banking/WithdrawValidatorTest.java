@@ -1,6 +1,7 @@
 package banking;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -172,7 +173,7 @@ public class WithdrawValidatorTest {
 		commandValidator.validate(command);
 		commandProcessor.commandParser(command);
 		commandValidator.validate(command);
-		assertEquals(false, commandValidator.validate(command));
+		assertFalse(commandValidator.validate(command));
 
 	}
 
@@ -284,7 +285,6 @@ public class WithdrawValidatorTest {
 
 	@Test
 	void amount_to_withdraw_cannot_be_1001_in_savings() {
-		String commandType = "deposit";
 		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
 		String command = "withdraw 12345677 1001";
 		boolean actual = commandValidator.validate(command);

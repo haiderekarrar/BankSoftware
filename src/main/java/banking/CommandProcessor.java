@@ -1,12 +1,12 @@
 package banking;
 
 public class CommandProcessor {
+	private final DepositCommandProcessor depositCommandProcessor;
+	private final CreateCommandProcessor createCommandProcessor;
+	private final WithdrawCommandProcessor withdrawCommandProcessor;
+	private final TransferCommandProcessor transferCommandProcessor;
+	private final PassCommandProcessor passCommandProcessor;
 	protected Bank bank;
-	private DepositCommandProcessor depositCommandProcessor;
-	private CreateCommandProcessor createCommandProcessor;
-	private WithdrawCommandProcessor withdrawCommandProcessor;
-	private TransferCommandProcessor transferCommandProcessor;
-	private PassCommandProcessor passCommandProcessor;
 
 	public CommandProcessor(Bank bank, DepositCommandProcessor depositCommandProcessor,
 			CreateCommandProcessor createCommandProcessor, WithdrawCommandProcessor withdrawCommandProcessor,
@@ -17,25 +17,33 @@ public class CommandProcessor {
 		this.withdrawCommandProcessor = withdrawCommandProcessor;
 		this.transferCommandProcessor = transferCommandProcessor;
 		this.passCommandProcessor = passCommandProcessor;
+
 	}
 
 	public void commandParser(String command) {
 		String[] parts = command.split(" ");
 		String commandType = parts[0].toUpperCase();
-		if (("CREATE".equals(commandType))) {
+		switch (commandType) {
+		case "CREATE":
 			createCommandProcessor.commandProcessor(parts);
-		} else if (("DEPOSIT".equals(commandType))) {
+			break;
+		case "DEPOSIT":
 			depositCommandProcessor.commandProcessor(parts);
-		} else if (("WITHDRAW".equals(commandType))) {
+			break;
+		case "WITHDRAW":
 			withdrawCommandProcessor.commandProcessor(parts);
-		} else if (("TRANSFER".equals(commandType))) {
+			break;
+		case "TRANSFER":
 			transferCommandProcessor.commandProcessor(parts);
-		} else if (("PASS".equals(commandType))) {
+			break;
+		case "PASS":
 			passCommandProcessor.commandProcessor(parts);
+			break;
 		}
 	}
 
 	protected void commandProcessor(String[] parts) {
 		// Default implementation, can be overridden by child classes
 	}
+
 }

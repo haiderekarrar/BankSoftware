@@ -30,12 +30,12 @@ public class PassCommandProcessor extends CommandProcessor {
 				double balance = entry.getValue().getBalance();
 				double apr = entry.getValue().getApr();
 
-				if (accountType.equals("SAVINGS") || accountType.equals("CHECKING")) {
+				if (accountType.equals("Savings") || accountType.equals("Checking")) {
 					double moneyFromApr = balance * (apr / 1200);
 					bank.depositMoneyFromBank(accountID, moneyFromApr);
 				}
 
-				if (accountType.equals("CD")) {
+				if (accountType.equals("Cd")) {
 					int i = 0;
 					while (i < 4) {
 						double moneyFromApr = balance * (apr / 1200);
@@ -52,12 +52,12 @@ public class PassCommandProcessor extends CommandProcessor {
 					bank.withdrawMoneyFromBank(accountID, 25);
 				}
 				count += 1;
-				if (accountType.equals("SAVINGS")) {
+				if (accountType.equals("Savings")) {
 					bank.setSavingsWithdrawal(accountID, 0);
 				}
 
 				bank.setMonthsPassed(accountID, 1);
-				if ((bank.getMonthsPassed(accountID) % 12 == 0) && accountType.equals("CD")) {
+				if ((bank.getMonthsPassed(accountID) % 12 == 0) && accountType.equals("Cd")) {
 					bank.setCdWithdrawal(accountID, 0);
 				}
 

@@ -20,7 +20,7 @@ public class TransferCommandProcessor extends CommandProcessor {
 			amountToTransfer = accountBalanceOfAccountToWithdrawFrom;
 		}
 
-		if (accountTypeToWithdrawFrom.equals("SAVINGS")) {
+		if (accountTypeToWithdrawFrom.equals("Savings")) {
 			bank.setSavingsWithdrawal(accountIDToWithdrawFrom, 1);
 		}
 		bank.withdrawMoneyFromBank(accountIDToWithdrawFrom, amountToTransfer);

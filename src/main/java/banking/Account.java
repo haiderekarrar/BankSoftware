@@ -1,13 +1,18 @@
 package banking;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Account {
+	private final int id;
+	private final List<String> accountTransactionHistory = new ArrayList<>();
+	private final String accountType;
 	private double balance;
 	private int months = 0;
 	private double apr;
-	private int id;
 	private int savingsWithdrawal = 0;
+	private String accountInformation;
 	private int cdWithdrawal = 1;
-	private String accountType;
 
 	public Account(double apr, int id, String accountType) {
 		this.apr = apr;
@@ -78,6 +83,22 @@ public abstract class Account {
 
 	public void setSavingsWithdrawal(int toSet) {
 		savingsWithdrawal = toSet;
+	}
+
+	public String getAccountInformation() {
+		return accountInformation;
+	}
+
+	public void setAccountInformation(String accountInfo) {
+		accountInformation = accountInfo;
+	}
+
+	public List<String> getAccountTransactionHistory() {
+		return accountTransactionHistory;
+	}
+
+	public void setAccountTransactionHistory(String accountHistory) {
+		accountTransactionHistory.add(accountHistory);
 	}
 
 }

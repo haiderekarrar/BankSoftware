@@ -466,6 +466,7 @@ public class TransferValidatorTest {
 
 		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
 		bank.addAccount("SAVINGS", 12345678, 0.7, 0);
+		bank.depositMoneyFromBank(12345677, 500);
 		String command = "transfer 12345677 12345678 300";
 		commandValidator.validate(command);
 		commandProcessor.commandParser(command);

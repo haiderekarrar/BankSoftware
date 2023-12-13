@@ -1,12 +1,12 @@
 package banking;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class PassCommandProcessorTest {
-	AccountsProcessor accountsProcessor = new AccountsProcessor();
+
 	private DepositCommandProcessor depositCommandProcessor;
 	private Bank bank;
 	private CreateCommandProcessor createCommandProcessor;
@@ -14,6 +14,13 @@ public class PassCommandProcessorTest {
 	private TransferCommandProcessor transferCommandProcessor;
 	private PassCommandProcessor passCommandProcessor;
 	private CommandProcessor commandProcessor;
+
+	private DepositValidator depositValidator;
+	private CreateValidator createValidator;
+	private CommandValidator commandValidator;
+	private WithdrawValidator withdrawValidator;
+	private TransferValidator transferValidator;
+	private PassValidator passValidator;
 
 	@BeforeEach
 	void setUp() {
@@ -30,13 +37,26 @@ public class PassCommandProcessorTest {
 				withdrawCommandProcessor, transferCommandProcessor, passCommandProcessor);
 		commandProcessor = new CommandProcessor(bank, depositCommandProcessor, createCommandProcessor,
 				withdrawCommandProcessor, transferCommandProcessor, passCommandProcessor);
+
+		depositValidator = new DepositValidator(bank, depositValidator, createValidator, withdrawValidator,
+				transferValidator, passValidator);
+		createValidator = new CreateValidator(bank, depositValidator, createValidator, withdrawValidator,
+				transferValidator, passValidator);
+		withdrawValidator = new WithdrawValidator(bank, depositValidator, createValidator, withdrawValidator,
+				transferValidator, passValidator);
+		transferValidator = new TransferValidator(bank, depositValidator, createValidator, withdrawValidator,
+				transferValidator, passValidator);
+		passValidator = new PassValidator(bank, depositValidator, createValidator, withdrawValidator, transferValidator,
+				passValidator);
+		commandValidator = new CommandValidator(bank, depositValidator, createValidator, withdrawValidator,
+				transferValidator, passValidator);
 	}
 
 	@Test
 	void delete_an_account_with_0_balance_after_one_month() {
 		bank.addAccount("CHECKING", 12345678, 9.5, 0);
 		commandProcessor.commandParser("pass 1");
-		assertEquals(false, bank.accountExistsByAccountID(12345678));
+		assertFalse(bank.accountExistsByAccountID(12345678));
 	}
 
 	@Test
@@ -44,7 +64,7 @@ public class PassCommandProcessorTest {
 		bank.addAccount("CHECKING", 12345678, 9.5, 0);
 		commandProcessor.commandParser("depost 12345678 25");
 		commandProcessor.commandParser("pass 2");
-		assertEquals(false, bank.accountExistsByAccountID(12345678));
+		assertFalse(bank.accountExistsByAccountID(12345678));
 	}
 
 	@Test
@@ -68,7 +88,7 @@ public class PassCommandProcessorTest {
 		bank.addAccount("CHECKING", 12345678, 1.1, 0);
 		commandProcessor.commandParser("deposit 12345678 50");
 		commandProcessor.commandParser("pass 4");
-		assertEquals(false, bank.accountExistsByAccountID(12345678));
+		assertFalse(bank.accountExistsByAccountID(12345678));
 	}
 
 	@Test
@@ -138,7 +158,7 @@ public class PassCommandProcessorTest {
 		commandProcessor.commandParser("deposit 12345678 50");
 		commandProcessor.commandParser("pass 3");
 		commandProcessor.commandParser("create checking 12345678 2.2");
-		assertEquals("CHECKING", bank.getAccountTypeByAccountID(12345678));
+		assertEquals("Checking", bank.getAccountTypeByAccountID(12345678));
 	}
 
 	@Test
@@ -151,10 +171,35 @@ public class PassCommandProcessorTest {
 		commandProcessor.commandParser("deposit 12345677 95");
 		commandProcessor.commandParser("deposit 12345678 50");
 		commandProcessor.commandParser("pass 15");
-		assertEquals(false, bank.accountExistsByAccountID(12345677));
-		assertEquals(false, bank.accountExistsByAccountID(12345678));
+		assertFalse(bank.accountExistsByAccountID(12345677));
+		assertFalse(bank.accountExistsByAccountID(12345678));
 		assertEquals(1125.5619410591048, bank.getBalance(12345676));
 		assertEquals(802.5047346495595, bank.getBalance(12345679));
+	}
+
+	@Test
+	void cannot_attempt_to_wothdraw_in_the_same_month_twice_command_invalid() {
+
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
+		bank.depositMoneyFromBank(12345677, 300);
+		commandProcessor.commandParser("withdraw 12345677 100");
+
+		boolean actual = commandValidator.validate("withdraw 12345677 100");
+		assertFalse(actual);
+
+	}
+
+	@Test
+	void can_attempt_to_wothdraw_in_the_same_month_twice_command_valid() {
+
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
+		bank.depositMoneyFromBank(12345677, 300);
+		commandProcessor.commandParser("withdraw 12345677 100");
+		commandProcessor.commandParser("pass 1");
+
+		boolean actual = commandValidator.validate("withdraw 12345677 100");
+		assertTrue(actual);
+
 	}
 
 	@Test
@@ -188,7 +233,20 @@ public class PassCommandProcessorTest {
 		bank.addAccount("CHECKING", 12345678, 1.2, 0);
 		commandProcessor.commandParser("pass 1");
 
-		assertEquals(false, bank.accountExistsByAccountID(12345678));
+		assertFalse(bank.accountExistsByAccountID(12345678));
+	}
+
+	@Test
+	void withdraw_from_savings_twice_in_a_month_is_invalid() {
+
+		bank.addAccount("SAVINGS", 12345677, 0.6, 0);
+		String command = "withdraw 12345677 300";
+		commandValidator.validate(command);
+		commandProcessor.commandParser(command);
+		boolean actual = commandValidator.validate(command);
+
+		assertFalse(actual);
+
 	}
 
 	@Test
@@ -197,8 +255,8 @@ public class PassCommandProcessorTest {
 		bank.addAccount("SAVINGS", 12345677, 1.2, 0);
 
 		commandProcessor.commandParser("pass 1");
-		assertEquals(false, bank.accountExistsByAccountID(12345678));
-		assertEquals(false, bank.accountExistsByAccountID(12345677));
+		assertFalse(bank.accountExistsByAccountID(12345678));
+		assertFalse(bank.accountExistsByAccountID(12345677));
 	}
 
 	@Test
@@ -208,9 +266,9 @@ public class PassCommandProcessorTest {
 		bank.addAccount("SAVINGS", 12345677, 1.2, 0);
 
 		commandProcessor.commandParser("pass 1");
-		assertEquals(false, bank.accountExistsByAccountID(12345678));
-		assertEquals(false, bank.accountExistsByAccountID(12345677));
-		assertEquals(true, bank.accountExistsByAccountID(12345679));
+		assertFalse(bank.accountExistsByAccountID(12345678));
+		assertFalse(bank.accountExistsByAccountID(12345677));
+		assertTrue(bank.accountExistsByAccountID(12345679));
 	}
 
 	@Test
@@ -251,7 +309,7 @@ public class PassCommandProcessorTest {
 		bank.addAccount("SAVINGS", 12345678, 1.2, 0);
 		bank.depositMoneyFromBank(12345678, 25);
 		commandProcessor.commandParser("pass 3");
-		assertEquals(false, bank.accountExistsByAccountID(12345678));
+		assertFalse(bank.accountExistsByAccountID(12345678));
 
 	}
 

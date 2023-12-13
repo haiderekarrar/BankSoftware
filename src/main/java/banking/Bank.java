@@ -1,15 +1,15 @@
 package banking;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Bank {
-	private double deposit;
 
-	private Map<Integer, Account> accounts;
+	private final Map<Integer, Account> accounts;
 
 	public Bank() {
-		accounts = new HashMap<>();
+		accounts = new LinkedHashMap<>();
 	}
 
 	public Map<Integer, Account> getAccounts() {
@@ -18,12 +18,15 @@ public class Bank {
 
 	public void addAccount(String accountType, int accountId, double accountApr, double deposit) {
 		if ("CHECKING".equals(accountType)) {
+			accountType = "Checking";
 			accounts.put(accountId, new CheckingAccount(accountApr, accountId, accountType));
 		}
 		if ("SAVINGS".equals(accountType)) {
+			accountType = "Savings";
 			accounts.put(accountId, new SavingsAccount(accountApr, accountId, accountType));
 		}
 		if ("CD".equals(accountType)) {
+			accountType = "Cd";
 			accounts.put(accountId, new CertificateOfDeposit(accountApr, accountId, deposit, accountType));
 		}
 
@@ -38,11 +41,7 @@ public class Bank {
 	}
 
 	public boolean accountExistsByAccountID(int accountID) {
-		if (accounts.get(accountID) != null) {
-			return true;
-		} else {
-			return false;
-		}
+		return accounts.get(accountID) != null;
 	}
 
 	public double getAccountApr(int accountID) {
@@ -79,6 +78,14 @@ public class Bank {
 
 	public void setCdWithdrawal(int accountID, int toSet) {
 		accounts.get(accountID).setCdWithdrawal(toSet);
+	}
+
+	public String getAccountReportbyAccountID(int accountID) {
+		return accounts.get(accountID).getAccountInformation();
+	}
+
+	public List<String> getAccountTransactionHistorybyAccountID(int accountID) {
+		return accounts.get(accountID).getAccountTransactionHistory();
 	}
 
 }

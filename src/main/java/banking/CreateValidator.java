@@ -49,12 +49,8 @@ public class CreateValidator extends CommandValidator {
 			return false;
 		}
 
-		if (!(accountTypeUpperCase.equals("CHECKING") || accountTypeUpperCase.equals("SAVINGS")
-				|| accountTypeUpperCase.equals("CD"))) {
-			return false;
-		}
-
-		return true;
+		return accountTypeUpperCase.equals("CHECKING") || accountTypeUpperCase.equals("SAVINGS")
+				|| accountTypeUpperCase.equals("CD");
 	}
 
 }

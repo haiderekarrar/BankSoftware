@@ -2,12 +2,12 @@ package banking;
 
 public class CommandValidator {
 
-	private Bank bank;
-	private DepositValidator depositValidator;
-	private CreateValidator createValidator;
-	private WithdrawValidator withdrawValidator;
-	private TransferValidator transferValidator;
-	private PassValidator passValidator;
+	private final Bank bank;
+	private final DepositValidator depositValidator;
+	private final CreateValidator createValidator;
+	private final WithdrawValidator withdrawValidator;
+	private final TransferValidator transferValidator;
+	private final PassValidator passValidator;
 
 	public CommandValidator(Bank bank, DepositValidator depositValidator, CreateValidator createValidator,
 			WithdrawValidator withdrawValidator, TransferValidator transferValidator, PassValidator passValidator) {
@@ -36,17 +36,10 @@ public class CommandValidator {
 			return passValidator.validateCommand(parts);
 		} else if (commandType.equals("WITHDRAW")) {
 			return withdrawValidator.validateCommand(parts);
-		} else if (commandType.equals("TRANSFER")) {
+		} else {
 			return transferValidator.validateCommand(parts);
 
 		}
-
-		return true;
-	}
-
-	protected boolean validateCommand(String commandType, String[] parts) {
-		// will be overridden by child classes
-		return true;
 	}
 
 	protected boolean isValidAccountId(String accountID) {
@@ -61,27 +54,18 @@ public class CommandValidator {
 		return bank.getAccountTypeByAccountID(Integer.parseInt(accountID));
 	}
 
-	// test cases niot present for everything below this
+	// test cases not present for everything below this
 	protected boolean deposit_rule_for_checking(double amountToDeposit) {
-		if (amountToDeposit > 1000) {
-			return false;
-		}
-		return true;
+		return !(amountToDeposit > 1000);
 
 	}
 
 	protected boolean deposit_rule_for_savings(double amountToDeposit) {
-		if (amountToDeposit > 2500) {
-			return false;
-		}
-		return true;
+		return !(amountToDeposit > 2500);
 	}
 
 	protected boolean withdrawal_rule_for_checking(double amountToWithdraw) {
-		if (amountToWithdraw > 400) {
-			return false;
-		}
-		return true;
+		return !(amountToWithdraw > 400);
 
 	}
 
@@ -89,21 +73,18 @@ public class CommandValidator {
 
 		if (bank.getSavingsWithdrawal(accountID) == 1) {
 			return false;
-		} else if (amountToWithdraw > 1000) {
-			return false;
+		} else {
+			return !(amountToWithdraw > 1000);
 		}
-		return true;
 	}
 
 	protected boolean withdrawal_rule_for_cd(int accountID, double amountToWithdraw) {
 
 		if (bank.getCdWithdrawal(accountID) == 1) {
 			return false;
-		} else if (amountToWithdraw < bank.getBalance(accountID)) {
-			return false;
+		} else {
+			return !(amountToWithdraw < bank.getBalance(accountID));
 		}
-
-		return true;
 	}
 
 }
